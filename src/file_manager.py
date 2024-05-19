@@ -4,6 +4,14 @@ import shutil
 from src.config import SHOW_DEBUG_INFO
 
 
+def read_project_file(fpath) -> str:
+    root_dir = find_root_dir_r(os.path.dirname(os.path.realpath(__file__)))
+
+    if os.path.exists(root_dir + fpath) and os.path.isfile(root_dir + fpath):
+        f = open("file.txt", "r")
+        return f.read()
+
+
 def build_public_dir() -> None:
     current_file_path = os.path.dirname(os.path.realpath(__file__))
     project_root_path = find_root_dir_r(current_file_path)

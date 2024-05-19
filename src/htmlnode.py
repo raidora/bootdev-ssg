@@ -12,7 +12,7 @@ class HTMLNode:
             raise ValueError("Tag should contain either value or children, not both")
         if props is not None and not isinstance(props, dict):
             raise ValueError("props must be a dict")
-        if children is not None and not isinstance(props, list):
+        if children is not None and not isinstance(children, list):
             raise ValueError("children must be a list")
         if tag is not None and not isinstance(tag, str):
             raise ValueError("tag must be a string")

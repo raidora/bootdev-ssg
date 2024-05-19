@@ -1,6 +1,6 @@
 import unittest
 
-from textnode import TextNode
+from src.textnode import TextNode
 
 
 class TestTextNode(unittest.TestCase):
@@ -31,7 +31,6 @@ class TestTextNode(unittest.TestCase):
             TextNode((2, "warm"), "bold")
         self.assertEqual("Text must be of type string", str(ex.exception))
 
-
     def test_text_type(self):
         # Text type gets set when valid
         node = TextNode("This is a text node", "bold", "https://test.test")
@@ -40,15 +39,15 @@ class TestTextNode(unittest.TestCase):
         # Raise on invalid inputs
         with self.assertRaises(TypeError) as ex:
             TextNode("", "ham")
-        self.assertEqual("text_type must be one of bold, italic, strikethrough, underline", str(ex.exception))
+        self.assertEqual("text_type must be one of text, bold, italic, code, link, image", str(ex.exception))
 
         with self.assertRaises(TypeError) as ex:
             TextNode("", {6: 6})
-        self.assertEqual("text_type must be one of bold, italic, strikethrough, underline", str(ex.exception))
+        self.assertEqual("text_type must be one of text, bold, italic, code, link, image", str(ex.exception))
 
         with self.assertRaises(TypeError) as ex:
             TextNode("", None, "url was here --written by url ca 1992")
-        self.assertEqual("text_type must be one of bold, italic, strikethrough, underline", str(ex.exception))
+        self.assertEqual("text_type must be one of text, bold, italic, code, link, image", str(ex.exception))
 
     def test_url(self):
         # Url gets set

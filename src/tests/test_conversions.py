@@ -1,7 +1,7 @@
 import unittest
 
 from src.conversions import text_node_to_html_node, split_nodes_delimiter, extract_markdown_images, \
-    extract_markdown_links, split_nodes_image, split_nodes_link, text_to_textnodes, map_into_zones
+    extract_markdown_links, split_nodes_image, split_nodes_link, text_to_textnodes, map_into_zones, markdown_to_blocks
 from src.textnode import TextNode
 
 
@@ -109,7 +109,8 @@ class TestTextNode(unittest.TestCase):
             TextNode(" word and a ", TextNode.text_type_text),
             TextNode("code block", TextNode.text_type_code),
             TextNode(" and an ", TextNode.text_type_text),
-            TextNode("image", TextNode.text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+            TextNode("image", TextNode.text_type_image,
+                     "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
             TextNode(" and a ", TextNode.text_type_text),
             TextNode("link", TextNode.text_type_link, "https://boot.dev"),
         ]
@@ -118,10 +119,31 @@ class TestTextNode(unittest.TestCase):
     def test_zone_mapper(self):
         text = "This *boob* is text with a *hallo* bit bit ibitus"
         res = map_into_zones(text, "*")
-        expected = [('T', 0), ('h', 0), ('i', 0), ('s', 0), (' ', 0), ('*', 1), ('b', 1), ('o', 1), ('o', 1), ('b', 1), ('*', 1), (' ', 0), ('i', 0), ('s', 0), (' ', 0), ('t', 0), ('e', 0), ('x', 0), ('t', 0), (' ', 0), ('w', 0), ('i', 0), ('t', 0), ('h', 0), (' ', 0), ('a', 0), (' ', 0), ('*', 1), ('h', 1), ('a', 1), ('l', 1), ('l', 1), ('o', 1), ('*', 1), (' ', 0), ('b', 0), ('i', 0), ('t', 0), (' ', 0), ('b', 0), ('i', 0), ('t', 0), (' ', 0), ('i', 0), ('b', 0), ('i', 0), ('t', 0), ('u', 0), ('s', 0)]
+        expected = [('T', 0), ('h', 0), ('i', 0), ('s', 0), (' ', 0), ('*', 1), ('b', 1), ('o', 1), ('o', 1), ('b', 1),
+                    ('*', 1), (' ', 0), ('i', 0), ('s', 0), (' ', 0), ('t', 0), ('e', 0), ('x', 0), ('t', 0), (' ', 0),
+                    ('w', 0), ('i', 0), ('t', 0), ('h', 0), (' ', 0), ('a', 0), (' ', 0), ('*', 1), ('h', 1), ('a', 1),
+                    ('l', 1), ('l', 1), ('o', 1), ('*', 1), (' ', 0), ('b', 0), ('i', 0), ('t', 0), (' ', 0), ('b', 0),
+                    ('i', 0), ('t', 0), (' ', 0), ('i', 0), ('b', 0), ('i', 0), ('t', 0), ('u', 0), ('s', 0)]
         self.assertEqual(res, expected)
 
         text = "This **boob** is text with a *hallo* bit bit ibitus"
         res = map_into_zones(text, "**")
-        expected = [('T', 0), ('h', 0), ('i', 0), ('s', 0), (' ', 0), ('*', 1), ('*', 1), ('b', 1), ('o', 1), ('o', 1), ('b', 1), ('*', 1), ('*', 1), (' ', 0), ('i', 0), ('s', 0), (' ', 0), ('t', 0), ('e', 0), ('x', 0), ('t', 0), (' ', 0), ('w', 0), ('i', 0), ('t', 0), ('h', 0), (' ', 0), ('a', 0), (' ', 0), ('*', 0), ('h', 0), ('a', 0), ('l', 0), ('l', 0), ('o', 0), ('*', 0), (' ', 0), ('b', 0), ('i', 0), ('t', 0), (' ', 0), ('b', 0), ('i', 0), ('t', 0), (' ', 0), ('i', 0), ('b', 0), ('i', 0), ('t', 0), ('u', 0), ('s', 0)]
+        expected = [('T', 0), ('h', 0), ('i', 0), ('s', 0), (' ', 0), ('*', 1), ('*', 1), ('b', 1), ('o', 1), ('o', 1),
+                    ('b', 1), ('*', 1), ('*', 1), (' ', 0), ('i', 0), ('s', 0), (' ', 0), ('t', 0), ('e', 0), ('x', 0),
+                    ('t', 0), (' ', 0), ('w', 0), ('i', 0), ('t', 0), ('h', 0), (' ', 0), ('a', 0), (' ', 0), ('*', 0),
+                    ('h', 0), ('a', 0), ('l', 0), ('l', 0), ('o', 0), ('*', 0), (' ', 0), ('b', 0), ('i', 0), ('t', 0),
+                    (' ', 0), ('b', 0), ('i', 0), ('t', 0), (' ', 0), ('i', 0), ('b', 0), ('i', 0), ('t', 0), ('u', 0),
+                    ('s', 0)]
         self.assertEqual(res, expected)
+
+    def test_markdown_to_block(self):
+        md = """This is **bolded** paragraph
+
+This is another paragraph with *italic* text and `code` here
+This is the same paragraph on a new line
+
+* This is a list
+* with items"""
+
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(len(blocks), 3)

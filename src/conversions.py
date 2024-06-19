@@ -187,3 +187,35 @@ def markdown_to_blocks(markdown):
     blocks = [block for block in blocks if block]
 
     return blocks
+
+
+block_type_paragraph = "paragraph"
+block_type_heading = "heading"
+block_type_code = "code"
+block_type_quote = "quote"
+block_type_unordered_list = "unordered_list"
+block_type_ordered_list = "ordered_list"
+
+
+def block_to_block_type(block):
+    if block.startswith('#'):
+        parts = block.split(' ', 1)
+        if len(parts) > 1 and parts[0].count('#') in range(1, 7):
+            return block_type_heading
+
+    if block.startswith('```') and block.endswith('```'):
+        return block_type_code
+
+    if all(line.startswith('>') for line in block.split('\n')):
+        return block_type_quote
+
+    if all(line.startswith(('* ', '- ')) for line in block.split('\n')):
+        return block_type_unordered_list
+
+    lines = block.split('\n')
+    if all(line.split('. ')[0].isdigit() for line in lines):
+        numbers = [int(line.split('. ')[0]) for line in lines]
+        if numbers == list(range(1, len(numbers) + 1)):
+            return block_type_ordered_list
+
+    return block_type_paragraph

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 python src/main.py
-python server.py --dir public
+cd public && python -m http.server 8888

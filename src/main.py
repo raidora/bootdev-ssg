@@ -1,4 +1,5 @@
 from src.file_manager import build_public_dir
+from src.generator import generate_page
 
 
 def main() -> None:

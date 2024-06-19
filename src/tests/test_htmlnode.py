@@ -3,7 +3,7 @@ import unittest
 from src.htmlnode import HTMLNode
 
 
-class TestTextNode(unittest.TestCase):
+class TestHtmlNode(unittest.TestCase):
 
     def test_value_or_children_not_both(self):
         node = HTMLNode("h1", "imanode")

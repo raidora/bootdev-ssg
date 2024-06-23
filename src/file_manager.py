@@ -6,10 +6,21 @@ from src.config import SHOW_DEBUG_INFO
 
 def read_project_file(fpath) -> str:
     root_dir = find_root_dir_r(os.path.dirname(os.path.realpath(__file__)))
+    full_path = root_dir + fpath
 
-    if os.path.exists(root_dir + fpath) and os.path.isfile(root_dir + fpath):
-        f = open("file.txt", "r")
-        return f.read()
+    if os.path.exists(full_path) and os.path.isfile(full_path):
+        with open(full_path, "r") as file:
+            return file.read()
+
+
+def write_project_file(fpath, contents: str) -> None:
+    root_dir = find_root_dir_r(os.path.dirname(os.path.realpath(__file__)))
+    full_path = root_dir + fpath
+
+    os.makedirs(os.path.dirname(full_path), exist_ok=True)
+
+    with open(full_path, "w") as file:
+        file.write(contents)
 
 
 def build_public_dir() -> None:

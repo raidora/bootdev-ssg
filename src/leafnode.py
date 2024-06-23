@@ -7,7 +7,7 @@ class LeafNode(HTMLNode):
         pass
 
     def to_html(self):
-        if not self.value or self.value.strip() == "":
+        if self.value is None:
             raise ValueError("Value cannot be empty")
 
         if not self.tag or self.tag.strip() == "":

@@ -24,13 +24,23 @@ def text_node_to_html_node(node: TextNode) -> HTMLNode:
         return LeafNode("a", node.text, {'href': node.url})
 
     if ntype == TextNode.text_type_image:
-        return LeafNode("img", None, {'src': node.url, 'alt': node.text})
+        return LeafNode("img", "", {'src': node.url, 'alt': node.text})
 
     raise ValueError(f"Text type {node.text_type} is not a valid text_type")
 
 
 text_zone = 0
 delim_zone = 1
+
+
+def block_content_to_html(block):
+    text_nodes = text_to_textnodes(block)
+    html = ""
+
+    for node in text_nodes:
+        html += text_node_to_html_node(node).to_html()
+
+    return html
 
 
 def map_into_zones(text, delimiter):
